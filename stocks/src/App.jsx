@@ -25,7 +25,7 @@ const App = () => {
       .catch(error => console.error('Error fetching stock data:', error));
   }, []);
   
-
+// push
   useEffect(() => {
     const symbolsForExchange = stockData
       .filter(stock => stock.exchanges === selectedExchange)
