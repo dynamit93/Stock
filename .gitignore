@@ -1,0 +1,38 @@
+# Dependency directories
+node_modules/
+.pnp/
+.pnp.js
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build artifacts
+build/
+dist/
+out/
+.next/
+build-output/
+public/
+
+# Cache and logs
+.cache/
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+*.bak
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
