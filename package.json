@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-financial-charts": "^2.0.1",
+    "react-scripts": "^5.0.1"
+  }
+}

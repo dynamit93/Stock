@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import Candlesticks from './Charts/Candelsticks';
 import './App.css';
 
 const App = () => {
@@ -7,13 +8,12 @@ const App = () => {
   const [symbol, setSymbol] = useState('');
   const [selectedExchange, setSelectedExchange] = useState('');
   const [exchangeOptions, setExchangeOptions] = useState([]);
-  const [isExchangeOptionsOpen, setExchangeOptionsOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState('');
   const exchangeButtonRef = useRef(null);
-  const [filteredSymbols, setFilteredSymbols] = useState([]);
-
+  const [isExchangeOptionsOpen, setExchangeOptionsOpen] = useState(false);
+  const [isModelOptionsOpen, setModelOptionsOpen] = useState(false);
 
   useEffect(() => {
-    // Fetch all stock data from the API
     fetch('http://localhost:5090/api/Stock')
       .then(response => response.json())
       .then(data => {
@@ -24,8 +24,7 @@ const App = () => {
       })
       .catch(error => console.error('Error fetching stock data:', error));
   }, []);
-  
-// push
+
   useEffect(() => {
     const symbolsForExchange = stockData
       .filter(stock => stock.exchanges === selectedExchange)
@@ -47,6 +46,7 @@ const App = () => {
 
   const toggleExchangeOptions = () => {
     setExchangeOptionsOpen(!isExchangeOptionsOpen);
+    setModelOptionsOpen(false);
   };
 
   const handleExchangeOptionChange = (event) => {
@@ -54,21 +54,16 @@ const App = () => {
     setExchangeOptionsOpen(false);
   };
 
-  const handleOutsideClick = (event) => {
-    if (exchangeButtonRef.current && !exchangeButtonRef.current.contains(event.target)) {
-      setExchangeOptionsOpen(false);
-    }
+  const toggleModelOptions = () => {
+    setModelOptionsOpen(!isModelOptionsOpen);
+    setExchangeOptionsOpen(false);
   };
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, []);
+  const handleModelChange = (event) => {
+    setSelectedModel(event.target.value);
+  };
 
   const handleUpdate = () => {
-    // Fetch updated stock data based on symbol and selected exchange
     fetch(`http://localhost:5090/api/Stock/${symbol}/${selectedExchange}`)
       .then(response => response.json())
       .then(data => {
@@ -86,16 +81,15 @@ const App = () => {
         }
         return uniqueSymbols;
       }, []);
-  
-      return (
-        <datalist id="symbol-options">
-          {symbols.map((symbol, index) => (
-            <option key={index} value={symbol} />
-          ))}
-        </datalist>
-      );
-    };
-  
+
+    return (
+      <datalist id="symbol-options">
+        {symbols.map((symbol, index) => (
+          <option key={index} value={symbol} />
+        ))}
+      </datalist>
+    );
+  };
 
   return (
     <div>
@@ -137,9 +131,101 @@ const App = () => {
         <button className="update-button" onClick={handleUpdate}>
           <img src="Icons/updateicon.png" alt="Update" />
         </button>
-      </div>
 
-      {symbol && selectedExchange && (
+        <button className="models-button" onClick={toggleModelOptions}>
+  <img src="Icons/Candelstickicon.png" alt="Candlestick" className="icon" />
+  {isModelOptionsOpen && selectedExchange && (
+    <div className="model-options-container">
+      <div className="model-options-box">
+        <label>
+          <input
+            type="radio"
+            name="model"
+            value="Model 1"
+            checked={selectedModel === 'Model 1'}
+            onChange={handleModelChange}
+          />
+          Model 1
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="model"
+            value="Model 2"
+            checked={selectedModel === 'Model 2'}
+            onChange={handleModelChange}
+          />
+          Model 2
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="model"
+            value="Model 3"
+            checked={selectedModel === 'Model 3'}
+            onChange={handleModelChange}
+          />
+          Model 3
+        </label>
+      </div>
+    </div>
+  )}
+</button>
+
+
+        {isModelOptionsOpen && selectedExchange && (
+          <div className="model-options-container">
+            <div className="model-options-box">
+              <label>
+                <input
+                  type="radio"
+                  name="model"
+                  value="Model 1"
+                  checked={selectedModel === 'Model 1'}
+                  onChange={handleModelChange}
+                />
+                Model 1
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="model"
+                  value="Model 2"
+                  checked={selectedModel === 'Model 2'}
+                  onChange={handleModelChange}
+                />
+                Model 2
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="model"
+                  value="Model 3"
+                  checked={selectedModel === 'Model 3'}
+                  onChange={handleModelChange}
+                />
+                Model 3
+              </label>
+            </div>
+          </div>
+        )}
+      </div>
+      <div>
+        {selectedModel && getStockDataBySymbol().length > 0 && (
+          <LineChart width={800} height={500} data={getStockDataBySymbol()}>
+            <XAxis dataKey="date" />
+            <YAxis />
+            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey={selectedModel.toLowerCase()} name={selectedModel} stroke="green" />
+          </LineChart>
+        )}
+        {!selectedModel && getStockDataBySymbol().length > 0 && (
+          <Candlesticks data={getStockDataBySymbol()} />
+        )}
+      </div>
+      {symbol && selectedExchange && !selectedModel && (
         <LineChart width={800} height={500} data={getStockDataBySymbol()}>
           <XAxis dataKey="date" />
           <YAxis />
