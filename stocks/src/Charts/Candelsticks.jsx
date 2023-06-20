@@ -1,83 +1,75 @@
-import React, { useState, useEffect } from "react";
-import { format } from "d3-format";
-import { timeFormat } from "d3-time-format";
-import {
-  elderRay,
-  ema,
-  discontinuousTimeScaleProviderBuilder,
-  Chart,
-  ChartCanvas,
-  CurrentCoordinate,
-  BarSeries,
-  CandlestickSeries,
-  ElderRaySeries,
-  LineSeries,
-  MovingAverageTooltip,
-  OHLCTooltip,
-  SingleValueTooltip,
-  lastVisibleItemBasedZoomAnchor,
-  XAxis,
-  YAxis,
-  CrossHairCursor,
-  EdgeIndicator,
-  MouseCoordinateX,
-  MouseCoordinateY,
-  ZoomButtons,
-  withDeviceRatio,
-  withSize,
-} from "react-financial-charts";
+import React, { Component } from 'react';
+import axios from 'axios';
+import ApexCharts from 'apexcharts';
 
-const CandlestickChart = () => {
-  const [data, setData] = useState([]);
+class CandlestickChart extends Component {
+  constructor(props) {
+    super(props);
 
-  useEffect(() => {
-    // Fetch all stock data from the API
-    fetch('http://localhost:5090/api/Stock')
-      .then(response => response.json())
-      .then(data => {
-        setData(data);
-      })
-      .catch(error => console.error('Error fetching stock data:', error));
-  }, []);
-  
-  const height = 700;
-  const width = 900;
-  const margin = { left: 0, right: 48, top: 0, bottom: 24 };
+    this.chartRef = React.createRef();
+    this.chart = null;
 
-  const ema12 = ema()
-    .id(1)
-    .options({ windowSize: 12 })
-    .merge((d, c) => {
-      d.ema12 = c;
-    })
-    .accessor((d) => d.ema12);
+    this.state = {
+      series: [],
+      options: {
+        chart: {
+          type: 'candlestick',
+          height: 350,
+          id: 'candlestick-chart'
+        },
+        title: {
+          text: 'Candlestick Chart',
+          align: 'left'
+        },
+        xaxis: {
+          type: 'datetime'
+        },
+        yaxis: {
+          tooltip: {
+            enabled: true
+          }
+        }
+      }
+    };
+  }
 
-  const ema26 = ema()
-    .id(2)
-    .options({ windowSize: 26 })
-    .merge((d, c) => {
-      d.ema26 = c;
-    })
-    .accessor((d) => d.ema26);
+  componentDidMount() {
+    this.fetchChartData();
+  }
 
-  const elder = elderRay();
+  fetchChartData = async () => {
+    try {
+      const response = await axios.post('http://localhost:5090/api/Stock/Search', {
+        symbol: 'AAPL',
+        exchanges: ['NYSE']
+      });
 
-  const calculatedData = elder(ema26(ema12(data)));
-  const { data: chartData, xScale, xAccessor, displayXAccessor } =
-    discontinuousTimeScaleProviderBuilder().inputDateAccessor(
-      (d) => new Date(d.date)
-    )(calculatedData);
+      const chartData = response.data.map(data => ({
+        x: new Date(data.date).getTime(),
+        y: [data.open, data.high, data.low, data.close]
+      }));
 
-  const pricesDisplayFormat = format(".2f");
-  const max = xAccessor(chartData[chartData.length - 1]);
-  const min = xAccessor(chartData[Math.max(0, chartData.length - 100)]);
-  const xExtents = [min, max + 5];
-  const dateTimeFormat = "%d %b";
-  const timeDisplayFormat = timeFormat(dateTimeFormat);
+      this.setState({ series: [{ data: chartData }] }, this.renderChart);
+    } catch (error) {
+      console.error('Error fetching chart data:', error);
+    }
+  };
 
-  // TODO: Add the rest of the component based on your requirements
+  renderChart = () => {
+    if (!this.chart) {
+      this.chart = new ApexCharts(this.chartRef.current, {
+        ...this.state.options,
+        series: this.state.series
+      });
+      this.chart.render();
+    } else {
+      this.chart.updateSeries(this.state.series);
+    }
+  };
 
-
-};
+  render() {
+    return <div ref={this.chartRef} id="chart" />;
+  }
+}
 
 export default CandlestickChart;

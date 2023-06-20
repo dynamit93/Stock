@@ -1,0 +1,61 @@
+.draggable-chart {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  .draggable-chart.minimized {
+    width: 150px;
+    height: 30px;
+  }
+  
+  .chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    background-color: #f5f5f5;
+    cursor: move;
+  }
+  
+  .chart-content {
+    padding: 8px;
+  }
+  
+  .minimize-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    background-color: #f5f5f5;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  #context-menu {
+    position: fixed;
+    display: none;
+    width: 150px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+  }
+  
+  .context-menu-option {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .context-menu-option:hover {
+    background-color: #f5f5f5;
+  }
+  

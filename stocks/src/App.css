@@ -6,12 +6,19 @@
 
 .models-button,
 .update-button {
-  position: relative;
+  position: absolute;
   display: inline-block;
   background: none;
   border: none;
   padding: 0;
   margin-right: 5px;
+}
+
+
+.models-button
+{
+  margin-top: -30px;
+  margin-left: 210px;
 }
 
 .models-button:focus,
@@ -44,7 +51,7 @@
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   padding: 8px;
-  z-index: 1;
+  z-index: 2;
   max-height: 200px;
   overflow-y: auto;
   width: 150px;
@@ -70,15 +77,14 @@
 
 .model-options-box {
   position: absolute;
-  top: 100%;
-  left: 0;
+  left: 150px;
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   padding: 8px;
   max-height: 200px;
   overflow-y: auto;
   width: 150px;
-  z-index: 1;
+  z-index: 2;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
