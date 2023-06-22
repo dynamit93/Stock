@@ -1,0 +1,79 @@
+.portfolio-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+  }
+  
+  .portfolio-menu {
+    display: flex;
+    align-items: center;
+    background-color: #e9e9e9;
+    padding: 10px;
+    font-weight: bold;
+  }
+  
+  .menu-columns {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 10px;
+  }
+  
+  .portfolio-list {
+    margin-top: 10px;
+  }
+  
+  .portfolio-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .item-details {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+  
+  .portfolio-actions {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .add-portfolio-window {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+  }
+  
+  .add-portfolio-window h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .add-portfolio-window label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .add-portfolio-window input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .add-portfolio-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  
+  .add-portfolio-buttons button {
+    margin-left: 5px;
+  }
+  

@@ -26,11 +26,6 @@
   outline: none;
 }
 
-.icon {
-  width: 25px;
-  height: 25px;
-}
-
 
 
 .exchange-dropdown {
@@ -67,12 +62,37 @@
   margin-right: 8px;
 }
 
+.icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px; /* Add space between icons */
+  display: inline-block; /* Display icons inline */
+  vertical-align: middle; /* Align icons vertically */
+}
+
+
 .exchange-button img,
+
 .update-button img {
   width: 25px;
   height: 25px;
+  margin-right: 5px; /* Add space between icons */
+  vertical-align: middle; /* Align icons vertically */
 }
 
+
+.Portfolio-button img {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px; /* Add space between icons */
+  vertical-align: middle; /* Align icons vertically */
+}
+.Portfolio-button {
+  margin-left: 65px; /* Add margin to the left of the Portfolio button */
+  padding: 0; /* Remove padding */
+  background: none; /* Remove background */
+  border: none; /* Remove border */
+}
 
 
 .model-options-box {
@@ -88,5 +108,30 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
+.portfolio-container {
+  position: absolute;
+  left: 150px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 8px;
+  /*max-height: 200px;*/
+  overflow-y: auto;
+  /*width: 150px;*/
+  z-index: 2;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
 
 
+
+.popup-inner {
+  position: absolute;
+  left: 350px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 8px;
+  /*max-height: 200px;*/
+  overflow-y: auto;
+  /*width: 150px;*/
+  z-index: 3;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
