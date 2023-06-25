@@ -4,6 +4,7 @@ import Candlesticks from './Charts/Candelsticks';
 import DraggableChart from './DraggableChart';
 import PaintingTools from './PaintingTools';
 import './App.css';
+import ApexChart from './Charts/ApexChart';
 
 const App = () => {
   const [stockData, setStockData] = useState([]);
@@ -52,10 +53,6 @@ const App = () => {
   const StartDatum = '2023-06-01';
   const portfoliodatum = '2023-06-15';
   const Yield = 10;
-
-
-  
-
 
   useEffect(() => {
     fetch('http://localhost:5090/api/Stock')
@@ -175,11 +172,10 @@ const App = () => {
   };
 
   const ContextMenu = ({ items, xPos, yPos, onClose }) => {
-    const handleItemClick = (action) => {
+    const handleItemClick = action => {
       action();
       onClose();
     };
-
 
     return (
       <ul className="context-menu" style={{ top: yPos, left: xPos }}>
@@ -192,6 +188,7 @@ const App = () => {
       </ul>
     );
   };
+
   const sortedData = [...portfolioData].sort((a, b) => {
     const aValue = a[sortColumn];
     const bValue = b[sortColumn];
@@ -295,10 +292,9 @@ const App = () => {
       {isPortfolioOpen && (
         <div className="portfolio-container">
           <div className="portfolio-menu">
-
-          <h4>
-        namn: {name}&nbsp;&nbsp;&nbsp;&nbsp;StartDatum: {StartDatum}&nbsp;&nbsp;&nbsp;&nbsp;Portföljdatum: {portfoliodatum}&nbsp;&nbsp;&nbsp;&nbsp;Avkastning: {Yield}%
-      </h4>
+            <h4>
+              namn: {name}&nbsp;&nbsp;&nbsp;&nbsp;StartDatum: {StartDatum}&nbsp;&nbsp;&nbsp;&nbsp;Portföljdatum: {portfoliodatum}&nbsp;&nbsp;&nbsp;&nbsp;Avkastning: {Yield}%
+            </h4>
             <br></br>
             <table className="portfolio-table">
               <thead>
@@ -330,6 +326,9 @@ const App = () => {
                     <td>{item.stop}</td>
                   </tr>
                 ))}
+                <div className="apex-chart-container">
+                <ApexChart /> {/* Display ApexChart component below the Portfolio */}
+                </div>
               </tbody>
             </table>
             <div className="portfolio-options">
@@ -338,7 +337,11 @@ const App = () => {
             </div>
           </div>
         </div>
+
+        
       )}
+
+
 
       {isNewPortfolioOpen && (
         <div className="popup-outer">
@@ -387,6 +390,8 @@ const App = () => {
           </DraggableChart>
         )}
       </div>
+
+      
     </div>
   );
 };

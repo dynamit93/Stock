@@ -1,52 +1,88 @@
 import React from 'react';
+import './Portfolio.css';
+import ReactApexChart from 'react-apexcharts';
+
+class ApexChart extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      series: [44, 55, 13, 43, 22],
+      options: {
+        chart: {
+          width: 380,
+          type: 'pie',
+        },
+        labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: 'bottom',
+              },
+            },
+          },
+        ],
+      },
+    };
+  }
+
+  render() {
+    return (
+      <div id="chart">
+        <ReactApexChart options={this.state.options} series={this.state.series} type="pie" width={380} />
+      </div>
+    );
+  }
+}
 
 const Portfolio = ({
-  data,
-  sortColumn,
-  sortOrder,
   handleAddPortfolio,
   handleExitPortfolio,
-  handleSort
+  portfolioData,
+  handleSort,
+  sortColumn,
+  sortOrder,
+  name,
+  StartDatum,
+  portfoliodatum,
+  Yield,
 }) => {
+  const sortedData = [...portfolioData].sort((a, b) => {
+    const aValue = a[sortColumn];
+    const bValue = b[sortColumn];
+    if (sortOrder === 'asc') {
+      if (aValue < bValue) return -1;
+      if (aValue > bValue) return 1;
+    } else {
+      if (aValue > bValue) return -1;
+      if (aValue < bValue) return 1;
+    }
+    return 0;
+  });
+
   return (
     <div className="portfolio-container">
       <div className="portfolio-menu">
+        <h4>
+          namn: {name}&nbsp;&nbsp;&nbsp;&nbsp;StartDatum: {StartDatum}&nbsp;&nbsp;&nbsp;&nbsp;Portföljdatum: {portfoliodatum}&nbsp;&nbsp;&nbsp;&nbsp;Avkastning: {Yield}%
+        </h4>
+        <br />
         <table className="portfolio-table">
-          <thead>
-            <tr>
-              <th onClick={() => handleSort('object')}>Object</th>
-              <th onClick={() => handleSort('amount')}>Antal</th>
-              <th onClick={() => handleSort('last')}>Senast</th>
-              <th onClick={() => handleSort('marketValue')}>Marknadsvärde</th>
-              <th onClick={() => handleSort('purchasePrice')}>Köpkurs</th>
-              <th onClick={() => handleSort('acquisitionValue')}>Anskaffningsvärde</th>
-              <th onClick={() => handleSort('returnPercentage')}>Avkastning%</th>
-              <th onClick={() => handleSort('portfolioPercentage')}>% av Portfölj</th>
-              <th onClick={() => handleSort('goal')}>Mål</th>
-              <th onClick={() => handleSort('stop')}>Stopp</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={index}>
-                <td>{item.object}</td>
-                <td>{item.amount}</td>
-                <td>{item.last}</td>
-                <td>{item.marketValue}</td>
-                <td>{item.purchasePrice}</td>
-                <td>{item.acquisitionValue}</td>
-                <td>{item.returnPercentage}</td>
-                <td>{item.portfolioPercentage}</td>
-                <td>{item.goal}</td>
-                <td>{item.stop}</td>
-              </tr>
-            ))}
-          </tbody>
+          {/* table headers */}
         </table>
-        <div className="portfolio-options">
-          <button onClick={handleAddPortfolio}>Add New Portfolio</button>
-          <button onClick={handleExitPortfolio}>Exit</button>
-        </div>
+        {/* table body */}
+      </div>
+
+      <ApexChart />
+
+      <div className="portfolio-options">
+        <button onClick={handleAddPortfolio}>Add New Portfolio</button>
+        <button onClick={handleExitPortfolio}>Exit</button>
       </div>
     </div>
   );
